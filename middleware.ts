@@ -1,7 +1,4 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-
-const FILE_EXT_RE = /\.[^/]+$/;
 
 export const config = {
   matcher: [
@@ -12,7 +9,8 @@ export const config = {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (!FILE_EXT_RE.test(pathname)) return NextResponse.next();
+  // Skip empty or root path
+  if (pathname === '/') return NextResponse.next();
 
   const url = req.nextUrl.clone();
   url.pathname = `/mk${pathname}`;
